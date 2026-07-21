@@ -104,12 +104,8 @@ function ccNES.getCallback(term, speakers)
 end
 
 function ccNES.start(file, callback)
-    local nes
-    local function runNes()
-        nes = ccNES.new(file)
-    end
-
-    runNes()
+    local nes = ccNES.new(file)
+    nes:reset()
 
     local function uploadKeyEvents(keyEvents)
         for i, v in ipairs(keyEvents) do
