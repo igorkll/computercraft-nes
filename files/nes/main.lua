@@ -4,7 +4,7 @@ ccNES = {}
 ccNES.width = 256
 ccNES.height = 240
 
-function ccNES.mt_hook(mt)
+function ccNES.mt_hook(mt) --legacy for scrapmechanic nes
     return setmetatable({}, mt)
 end
 
@@ -37,6 +37,31 @@ end
 
 ccNES.loadlib "nes"
 ccNES.loadlib "libs/json"
+
+local file_mt = {
+    __index = {
+        read = function(self, read)
+            if read == "*all" or read == "*a" then
+                return self.file.readAll()
+            end
+            
+            return self.file.read(read)
+        end,
+        write = function(self, str)
+            self.file.write(str)
+        end,
+        close = function(self)
+            self.file.close()
+            return true
+        end
+    }
+}
+
+function ccNES.open(path, mode)
+    local file = ccNES.mt_hook(file_mt)
+    file.file = fs.open(path, mode or "r")
+    return file
+end
 
 function ccNES.new(file)
     local Nes = NES:new(
