@@ -41,6 +41,7 @@ end
 ccNES.loadlib "nes"
 ccNES.loadlib "libs/json"
 ccNES.NES = env.NES
+ccNES.PALETTE = env.PALETTE
 
 local file_mt = {
     __index = {
@@ -81,7 +82,7 @@ function ccNES.new(file)
                 end
             )
             ]]
-            palette = PALETTE:defacto_palette()
+            palette = ccNES.PALETTE:defacto_palette()
         }
     )
     --Nes:run()
