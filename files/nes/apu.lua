@@ -59,7 +59,7 @@ end
 function APU:initialize(conf, cpu, rate, bits)
   self.conf = conf
   self.cpu = cpu
-  rate = rate or 44100
+  rate = rate or 48000
   bits = bits or 8
 
   self.pulse_0, self.pulse_1 = Pulse:new(self), Pulse:new(self)
