@@ -1,4 +1,4 @@
-local band, bor, bxor, bnot, lshift, rshift = bit.band, bit.bor, bit.bxor, bit.bnot, bit.lshift, bit.rshift
+local band, bor, bxor, bnot, lshift, rshift = ccbit.band, ccbit.bor, ccbit.bxor, ccbit.bnot, ccbit.lshift, ccbit.rshift
 local map, rotatePositiveIdx, nthBitIsSet, nthBitIsSetInt =
     UTILS.map,
     UTILS.rotatePositiveIdx,
@@ -446,11 +446,11 @@ function CPU:zpg(read, write)
             --self.clk = self.clk + zpg_write_clk[write]
             --self.clk = self.clk + zpg_write_clk2[write and 2 or 1]
             self.clk = self.clk + (write and CLK[2] or 0)
-            --[[
+
             if write then
                 self.clk = self.clk + CLK[2]
             end
-            --] ]
+            
         end
         --]]
 end

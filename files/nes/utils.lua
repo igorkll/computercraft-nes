@@ -1,9 +1,9 @@
-local band = bit.band
-local bor = bit.bor
-local bxor = bit.bxor
-local bnot = bit.bnot
-local lshift = bit.lshift
-local rshift = bit.rshift
+local band = ccbit.band
+local bor = ccbit.bor
+local bxor = ccbit.bxor
+local bnot = ccbit.bnot
+local lshift = ccbit.lshift
+local rshift = ccbit.rshift
 
 UTILS = {}
 local UTILS = UTILS

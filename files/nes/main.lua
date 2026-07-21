@@ -1,3 +1,5 @@
+ccbit = bit32
+
 ccNES = {}
 ccNES.width = 256
 ccNES.height = 240
@@ -29,7 +31,7 @@ end
 
 function ccNES.loadlib(name)
     ccNES.print("ccNES loadlib> ", name)
-    local path = "/nes/libs/" .. name .. ".lua"
+    local path = "/nes/" .. name .. ".lua"
     dofile(path)
 end
 

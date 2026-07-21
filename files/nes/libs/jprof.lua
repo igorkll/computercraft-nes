@@ -30,7 +30,7 @@ local profEnabled = true
 local profMem = 0
 
 local function getByte(n, byte)
-    return bit.rshift(bit.band(n, bit.lshift(0xff, 8 * byte)), 8 * byte)
+    return ccbit.rshift(ccbit.band(n, ccbit.lshift(0xff, 8 * byte)), 8 * byte)
 end
 
 -- I need this function (and not just msgpack.pack), so I can pack and write
