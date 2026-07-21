@@ -114,6 +114,7 @@ function ccNES.start(file, callback)
     end
 
     while true do
+        nes:run_once_skip()
         nes:run_once()
 
         --request

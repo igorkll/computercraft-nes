@@ -73,6 +73,11 @@ function NES:run_once()
     --prof.pop("NES:run_once")
 end
 
+function NES:run_once_skip()
+    self.cpu:run()
+    self.frame = self.frame + 1
+end
+
 function NES:run(counter)
     self:reset()
     if not counter then
