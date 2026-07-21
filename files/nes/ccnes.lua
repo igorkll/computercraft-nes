@@ -40,6 +40,7 @@ end
 
 ccNES.loadlib "nes"
 ccNES.loadlib "libs/json"
+ccNES.NES = env.NES
 
 local file_mt = {
     __index = {
@@ -67,7 +68,7 @@ function ccNES.open(path, mode)
 end
 
 function ccNES.new(file)
-    local Nes = NES:new(
+    local Nes = ccNES.NES:new(
         {
             file = file,
             loglevel = 0,
