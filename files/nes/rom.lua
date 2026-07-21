@@ -130,7 +130,7 @@ function ROM:save_battery()
         return
     end
     local sav = self.basename .. ".sav"
-    print("Saving: " .. sav)
+    ccNES.print("Saving: " .. sav)
     local out = assert(smNES.open(sav, "wb"))
     out:write(serpent.dump(self.wrk))
     assert(out:close())

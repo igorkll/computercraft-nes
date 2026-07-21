@@ -117,7 +117,7 @@ if PROF_CAPTURE then
         assert(#zoneStack == 0, "(jprof) Zone stack is not empty")
 
         if not profData then
-            print("(jprof) No profiling data saved (probably because you called prof.connect())")
+            ccNES.print("(jprof) No profiling data saved (probably because you called prof.connect())")
         else
             local file, msg = love.filesystem.newFile(filename, "w")
             assert(file, msg)
@@ -138,20 +138,20 @@ if PROF_CAPTURE then
         if sock then
             profiler.socket = sock
         else
-            print("(jprof) Could not create socket:", err)
+            ccNES.print("(jprof) Could not create socket:", err)
             return
         end
 
         local status = profiler.socket:setoption("tcp-nodelay", true)
         if not status then
-            print("(jprof) Could not set socket option.")
+            ccNES.print("(jprof) Could not set socket option.")
         end
 
         local status, err = profiler.socket:connect(address or "localhost", port or 1338)
         if status then
-            print("(jprof) Connected to viewer.")
+            ccNES.print("(jprof) Connected to viewer.")
         else
-            print("(jprof) Error connecting to viewer:", err)
+            ccNES.print("(jprof) Error connecting to viewer:", err)
             profiler.socket = nil
             return
         end
@@ -173,12 +173,12 @@ if PROF_CAPTURE then
             local num, err = profiler.socket:send(header .. data)
             if not num then
                 if err == "closed" then
-                    print("(jprof) Connection to viewer closed.")
+                    ccNES.print("(jprof) Connection to viewer closed.")
                     profiler.socket = nil
                     netBuffer = nil
                     return
                 else
-                    print("(jprof) Error sending data:", err)
+                    ccNES.print("(jprof) Error sending data:", err)
                 end
             end
             netBuffer = {}

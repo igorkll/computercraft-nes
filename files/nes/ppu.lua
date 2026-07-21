@@ -1307,7 +1307,7 @@ function PPU:debug_logging(scanline, hclk, hclk_target)
         hclk_target = "forever"
     end
 
-    print("ppu: scanline --{ scanline }, hclk --{ hclk }->--{ hclk_target }")
+    ccNES.print("ppu: scanline --{ scanline }, hclk --{ hclk }->--{ hclk_target }")
 end
 
 function PPU:run()

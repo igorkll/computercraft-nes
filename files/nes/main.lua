@@ -25,17 +25,38 @@ function ccNES.tableClear(tbl)
     end
 end
 
-function ccNES.loadlib(name)
-    print("ccNES loadlib> ", name)
-    local path = "Scripts/ccNES/" .. name .. ".lua"
-    dofile("$CONTENT_DATA/" .. path)
+function ccNES.print(...)
+    print(...)
 end
 
-function ccNES.open(path, mode)
-    mode = mode or "r"
-    return fs
+function ccNES.loadlib(name)
+    ccNES.print("ccNES loadlib> ", name)
+    local path = "Scripts/ccNES/" .. name .. ".lua"
+    dofile("$CONTENT_DATA/" .. path)
 end
 
 ccNES.loadlib "nes"
 ccNES.loadlib "libs/json"
 
+function ccNES.new(file)
+    local Nes = NES:new(
+        {
+            file = file,
+            loglevel = 0,
+            pc = nil,
+            --[[
+            palette = UTILS.map(
+                PALETTE:defacto_palette(),
+                function(c)
+                    return { c[1] / 256, c[2] / 256, c[3] / 256 }
+                end
+            )
+            ]]
+            palette = PALETTE:defacto_palette()
+        }
+    )
+    --Nes:run()
+    Nes:reset()
+
+    return Nes
+end
