@@ -93,7 +93,7 @@ end
 
 function ccNES.getCallback(term, speakers)
     return function(request)
-        sndplay.waitIfNeedAndPlayBufferOnSeveralSpeakers(speakers, request.pcm)
+        sndplay.waitIfNeedAndPlayBufferOnSeveralSpeakers(speakers, request.audio)
 
         local keyEvents = {}
 
