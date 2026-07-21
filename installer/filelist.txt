@@ -5,11 +5,11 @@
 /nes/coroutine_ppu.lua
 /nes/README.md
 /nes/pads.lua
-/nes/main.lua
 /nes/palette.lua
 /nes/cpu.lua
 /nes/conf.lua
 /nes/oldMain.lua
+/nes/ccnes.lua
 /nes/ppu.lua
 /nes/rom.lua
 /nes/apu.lua
