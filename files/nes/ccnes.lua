@@ -1,8 +1,11 @@
-ccbit = bit32
-
-ccNES = {}
+local ccNES = {}
 ccNES.width = 256
 ccNES.height = 240
+
+local env = setmetatable({
+    ccbit = bit32,
+    ccNES = ccNES
+}, {__index = _G})
 
 function ccNES.mt_hook(mt) --legacy for scrapmechanic nes
     return setmetatable({}, mt)
@@ -32,7 +35,7 @@ end
 function ccNES.loadlib(name)
     ccNES.print("ccNES loadlib> ", name)
     local path = "/nes/" .. name .. ".lua"
-    dofile(path)
+    loadfile(path, env)()
 end
 
 ccNES.loadlib "nes"
@@ -85,3 +88,63 @@ function ccNES.new(file)
 
     return Nes
 end
+
+function ccNES.start(file, callback)
+    local nes
+    local function runNes()
+        nes = ccNES.new(file)
+    end
+
+    runNes()
+
+    local function uploadKeyEvents(keyEvents)
+        for i, v in ipairs(keyEvents) do
+            nes.pads[v[1]](nes.pads, v[3], v[2])
+        end
+    end
+
+    while true do
+        nes:run_once()
+
+        --request
+        local pcm = {}
+        for _, val in ipairs(nes.cpu.apu.output) do
+            table.insert(pcm, val)
+        end
+        local iters = 15
+        local maxPcm = #pcm
+        for i = 0, iters do
+            local mul = i / iters
+            if pcm[i] then
+                pcm[i] = pcm[i] * mul
+            end
+            if pcm[maxPcm - i] then
+                pcm[maxPcm - i] = pcm[maxPcm - i] * mul
+            end
+        end
+        for i = 1, maxPcm do
+            local byte = math.floor((pcm[i] * 255) + 0.5)
+            if byte < 0 then byte = 0 elseif byte > 255 then byte = 255 end
+            pcm[i] = byte - 128
+        end
+
+        local response = {
+            pixels = nes.cpu.ppu.output_pixels,
+            audio = pcm
+        }
+
+        --run user callback
+        local response = callback(response)
+        
+        --process response
+        if response then
+            if response.keyEvents then
+                uploadKeyEvents(response.keyEvents)
+            end
+        end
+        
+        sleep(1 / 60)
+    end
+end
+
+return ccNES
