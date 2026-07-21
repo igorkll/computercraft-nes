@@ -1,6 +1,4 @@
 ccNES = {}
-
-ccNES = {}
 ccNES.width = 256
 ccNES.height = 240
 
@@ -26,13 +24,13 @@ function ccNES.tableClear(tbl)
 end
 
 function ccNES.print(...)
-    print(...)
+    --print(...)
 end
 
 function ccNES.loadlib(name)
     ccNES.print("ccNES loadlib> ", name)
-    local path = "Scripts/ccNES/" .. name .. ".lua"
-    dofile("$CONTENT_DATA/" .. path)
+    local path = "/nes/libs/" .. name .. ".lua"
+    dofile(path)
 end
 
 ccNES.loadlib "nes"
