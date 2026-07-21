@@ -245,7 +245,7 @@ function ProFi:sortReportsWithSortMethod(reports, sortMethod)
 end
 
 function ProFi:writeReportsToFilename(filename)
-    local file, err = smNES.open(filename, 'w')
+    local file, err = ccNES.open(filename, 'w')
     assert(file, err)
     self:writeBannerToFile(file)
     if #self.reports > 0 then

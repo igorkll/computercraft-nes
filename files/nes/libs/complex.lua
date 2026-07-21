@@ -58,7 +58,7 @@ DOWNLOAD/INSTALL
 --/////////////--
 
 -- link to complex table
-complex = smNES.fckmetatable({_TYPE = "module", _NAME = "complex", _VERSION = "0.3.3.20111212"}, {__call = function(_, num)
+complex = ccNES.fckmetatable({_TYPE = "module", _NAME = "complex", _VERSION = "0.3.3.20111212"}, {__call = function(_, num)
     return complex.to(num)
 end})
 local complex = complex
@@ -141,18 +141,18 @@ function complex.to(num)
         end
         local real, imag = tonumber(num[1]), tonumber(num[2])
         if real and imag then
-            return smNES.fckmetatable({real, imag}, complex_meta)
+            return ccNES.fckmetatable({real, imag}, complex_meta)
         end
         return
     end
     -- check for number
     local isnum = tonumber(num)
     if isnum then
-        return smNES.fckmetatable({isnum, 0}, complex_meta)
+        return ccNES.fckmetatable({isnum, 0}, complex_meta)
     end
     if type(num) == "string" then
         local real, imag = parse_complex(num)
-        return smNES.fckmetatable({real, imag}, complex_meta)
+        return ccNES.fckmetatable({real, imag}, complex_meta)
     end
 end
 
@@ -171,7 +171,7 @@ setmetatable(
 -- complex.new( real, complex )
 -- fast function to get a complex number, not invoking any checks
 function complex.new(...)
-    return smNES.fckmetatable({...}, complex_meta)
+    return ccNES.fckmetatable({...}, complex_meta)
 end
 
 -- complex.type( arg )
@@ -187,7 +187,7 @@ end
 -- r (radius) is a number
 -- phi (angle) must be in radians; e.g. [0 - 2pi]
 function complex.convpolar(radius, phi)
-    return smNES.fckmetatable({radius * math.cos(phi), radius * math.sin(phi)}, complex_meta)
+    return ccNES.fckmetatable({radius * math.cos(phi), radius * math.sin(phi)}, complex_meta)
 end
 
 -- complex.convpolardeg( r, phi )
@@ -196,7 +196,7 @@ end
 -- phi must be in degrees; e.g. [0 - 360 deg]
 function complex.convpolardeg(radius, phi)
     phi = phi / 180 * math.pi
-    return smNES.fckmetatable({radius * math.cos(phi), radius * math.sin(phi)}, complex_meta)
+    return ccNES.fckmetatable({radius * math.cos(phi), radius * math.sin(phi)}, complex_meta)
 end
 
 --// complex number functions only
@@ -288,31 +288,31 @@ end
 -- complex.copy( cx )
 -- copy complex number
 function complex.copy(cx)
-    return smNES.fckmetatable({cx[1], cx[2]}, complex_meta)
+    return ccNES.fckmetatable({cx[1], cx[2]}, complex_meta)
 end
 
 -- complex.add( cx1, cx2 )
 -- add two numbers; cx1 + cx2
 function complex.add(cx1, cx2)
-    return smNES.fckmetatable({cx1[1] + cx2[1], cx1[2] + cx2[2]}, complex_meta)
+    return ccNES.fckmetatable({cx1[1] + cx2[1], cx1[2] + cx2[2]}, complex_meta)
 end
 
 -- complex.sub( cx1, cx2 )
 -- subtract two numbers; cx1 - cx2
 function complex.sub(cx1, cx2)
-    return smNES.fckmetatable({cx1[1] - cx2[1], cx1[2] - cx2[2]}, complex_meta)
+    return ccNES.fckmetatable({cx1[1] - cx2[1], cx1[2] - cx2[2]}, complex_meta)
 end
 
 -- complex.mul( cx1, cx2 )
 -- multiply two numbers; cx1 * cx2
 function complex.mul(cx1, cx2)
-    return smNES.fckmetatable({cx1[1] * cx2[1] - cx1[2] * cx2[2], cx1[1] * cx2[2] + cx1[2] * cx2[1]}, complex_meta)
+    return ccNES.fckmetatable({cx1[1] * cx2[1] - cx1[2] * cx2[2], cx1[1] * cx2[2] + cx1[2] * cx2[1]}, complex_meta)
 end
 
 -- complex.mulnum( cx, num )
 -- multiply complex with number; cx1 * num
 function complex.mulnum(cx, num)
-    return smNES.fckmetatable({cx[1] * num, cx[2] * num}, complex_meta)
+    return ccNES.fckmetatable({cx[1] * num, cx[2] * num}, complex_meta)
 end
 
 -- complex.div( cx1, cx2 )
@@ -321,7 +321,7 @@ function complex.div(cx1, cx2)
     -- get complex value
     local val = cx2[1] ^ 2 + cx2[2] ^ 2
     -- multiply cx1 with conjugate complex of cx2 and divide through val
-    return smNES.fckmetatable(
+    return ccNES.fckmetatable(
         {(cx1[1] * cx2[1] + cx1[2] * cx2[2]) / val, (cx1[2] * cx2[1] - cx1[1] * cx2[2]) / val},
         complex_meta
     )
@@ -330,7 +330,7 @@ end
 -- complex.divnum( cx, num )
 -- divide through a number
 function complex.divnum(cx, num)
-    return smNES.fckmetatable({cx[1] / num, cx[2] / num}, complex_meta)
+    return ccNES.fckmetatable({cx[1] / num, cx[2] / num}, complex_meta)
 end
 
 -- complex.pow( cx, num )
@@ -346,13 +346,13 @@ function complex.pow(cx, num)
         for i = 2, num do
             real, imag = real * cx[1] - imag * cx[2], real * cx[2] + imag * cx[1]
         end
-        return smNES.fckmetatable({real, imag}, complex_meta)
+        return ccNES.fckmetatable({real, imag}, complex_meta)
     end
     -- we calculate the polar complex number now
     -- since then we have the versatility to calc any potenz of the complex number
     -- then we convert it back to a carthesic complex number, we loose precision here
     local length, phi = math.sqrt(cx[1] ^ 2 + cx[2] ^ 2) ^ num, math.atan2(cx[2], cx[1]) * num
-    return smNES.fckmetatable({length * math.cos(phi), length * math.sin(phi)}, complex_meta)
+    return ccNES.fckmetatable({length * math.cos(phi), length * math.sin(phi)}, complex_meta)
 end
 
 -- complex.sqrt( cx )
@@ -360,13 +360,13 @@ end
 function complex.sqrt(cx)
     local len = math.sqrt(cx[1] ^ 2 + cx[2] ^ 2)
     local sign = (cx[2] < 0 and -1) or 1
-    return smNES.fckmetatable({math.sqrt((cx[1] + len) / 2), sign * math.sqrt((len - cx[1]) / 2)}, complex_meta)
+    return ccNES.fckmetatable({math.sqrt((cx[1] + len) / 2), sign * math.sqrt((len - cx[1]) / 2)}, complex_meta)
 end
 
 -- complex.ln( cx )
 -- natural logarithm of cx
 function complex.ln(cx)
-    return smNES.fckmetatable(
+    return ccNES.fckmetatable(
         {
             math.log(math.sqrt(cx[1] ^ 2 + cx[2] ^ 2)),
             math.atan2(cx[2], cx[1])
@@ -379,20 +379,20 @@ end
 -- exponent of cx (e^cx)
 function complex.exp(cx)
     local expreal = math.exp(cx[1])
-    return smNES.fckmetatable({expreal * math.cos(cx[2]), expreal * math.sin(cx[2])}, complex_meta)
+    return ccNES.fckmetatable({expreal * math.cos(cx[2]), expreal * math.sin(cx[2])}, complex_meta)
 end
 
 -- complex.conjugate( cx )
 -- get conjugate complex of number
 function complex.conjugate(cx)
-    return smNES.fckmetatable({cx[1], -cx[2]}, complex_meta)
+    return ccNES.fckmetatable({cx[1], -cx[2]}, complex_meta)
 end
 
 -- complex.round( cx [,idp] )
 -- round complex numbers, by default to 0 decimal points
 function complex.round(cx, idp)
     local mult = 10 ^ (idp or 0)
-    return smNES.fckmetatable(
+    return ccNES.fckmetatable(
         {
             math.floor(cx[1] * mult + 0.5) / mult,
             math.floor(cx[2] * mult + 0.5) / mult
@@ -430,7 +430,7 @@ complex_meta.__pow = function(cx, num)
     return complex.pow(cx, num)
 end
 complex_meta.__unm = function(cx)
-    return smNES.fckmetatable({-cx[1], -cx[2]}, complex_meta)
+    return ccNES.fckmetatable({-cx[1], -cx[2]}, complex_meta)
 end
 complex_meta.__eq = function(cx1, cx2)
     if cx1[1] == cx2[1] and cx1[2] == cx2[2] then

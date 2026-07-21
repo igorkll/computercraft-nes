@@ -225,7 +225,7 @@ end
 local function deserialize(data, opts)
     local env =
         (opts and opts.safe == false) and G or
-        smNES.mt_hook(
+        ccNES.mt_hook(
             {
                 __index = function(t, k)
                     return t

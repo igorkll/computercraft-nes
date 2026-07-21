@@ -2,7 +2,7 @@
 
 _prefix = (...):match("(.+%.)[^%.]+$") or ""
 
-smNES.loadlib("libs/MessagePack")
+ccNES.loadlib("libs/MessagePack")
 local msgpack = MessagePack
 
 -- We need to make sure the number format is "double", so our timestamps have enough accuracy.

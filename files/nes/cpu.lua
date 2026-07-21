@@ -184,7 +184,7 @@ function CPU:reset()
 end
 
 function CPU:new(conf)
-    local cpu = smNES.mt_hook(CPU._mt)
+    local cpu = ccNES.mt_hook(CPU._mt)
     cpu.conf = conf or { loglevel = 0, pc = nil }
     cpu.conf.debug = UTILS.print
     cpu.ram = fill({}, UNDEFINED, RAM_SIZE)

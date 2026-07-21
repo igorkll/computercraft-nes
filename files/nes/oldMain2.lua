@@ -1,17 +1,17 @@
 --for scrapmechanic
 --https://steamcommunity.com/sharedfiles/filedetails/?id=3353025650
-sourceString = sourceString or [[smNES = {}
-smNES.width = 256
-smNES.height = 240
+sourceString = sourceString or [[ccNES = {}
+ccNES.width = 256
+ccNES.height = 240
 
-function smNES.mt_hook(mt)
+function ccNES.mt_hook(mt)
     return setmetatable({}, mt)
 end
 
-function smNES.fckmetatable(tbl, mt)
+function ccNES.fckmetatable(tbl, mt)
     local old__newindex = mt.__newindex
     mt.__newindex = nil
-    local newtbl = smNES.mt_hook(mt)
+    local newtbl = ccNES.mt_hook(mt)
     for k, v in pairs(tbl) do
         newtbl[k] = v
     end
@@ -19,13 +19,13 @@ function smNES.fckmetatable(tbl, mt)
     return newtbl
 end
 
-function smNES.tableClear(tbl)
+function ccNES.tableClear(tbl)
     for k in pairs(tbl) do
         tbl[k] = nil
     end
 end
 
-function smNES.loadlib(name)
+function ccNES.loadlib(name)
 end
 
 local file_mt = {
@@ -56,16 +56,16 @@ local file_mt = {
     }
 }
 
-function smNES.open(path, mode)
+function ccNES.open(path, mode)
     mode = mode or "r"
     local file
     if mode:sub(1, 1) == "w" then
         return nil, "failed to write file"
-        --file = smNES.mt_hook(file_mt)
+        --file = ccNES.mt_hook(file_mt)
         --file.write = true
         --file.buffer = {}
     else
-        file = smNES.mt_hook(file_mt)
+        file = ccNES.mt_hook(file_mt)
         file.buffer = path
         file.offset = 0
     end
@@ -73,7 +73,7 @@ function smNES.open(path, mode)
     return file
 end
 
-function smNES.new(file)
+function ccNES.new(file)
     local Nes = NES:new(
         {
             file = file,
@@ -88,7 +88,7 @@ function smNES.new(file)
     return Nes
 end]]
 
-local endCode = [[nesObj = smNES.new(ROMCODE)
+local endCode = [[nesObj = ccNES.new(ROMCODE)
 
 local tpadCounter = 0
 local oldPressed = {}
@@ -138,7 +138,7 @@ while true do
     
     if tick % 4 == 0 then
         local pixelData = nesObj.cpu.ppu.output_pixels
-        local pixelCount = smNES.width * smNES.height
+        local pixelCount = ccNES.width * ccNES.height
         local str = {}
         local strI = 1
         for i = 1, pixelCount do
@@ -189,24 +189,24 @@ local modParams = sm.json.open("$CONTENT_DATA/description.json")
 if better and better.isAvailable() then
     better.autoRegistration(modParams.name)
     if not sourceGen then
-        sourceString = better.filesystem.readFile("$CONTENT_" .. modParams.localId .. "/Scripts/smNES/libs/json.lua") .. "\n" .. sourceString
+        sourceString = better.filesystem.readFile("$CONTENT_" .. modParams.localId .. "/Scripts/ccNES/libs/json.lua") .. "\n" .. sourceString
     end
 end
 
-smNES = {}
-smNES.width = 256
-smNES.height = 240
+ccNES = {}
+ccNES.width = 256
+ccNES.height = 240
 
-function smNES.mt_hook(mt)
+function ccNES.mt_hook(mt)
     local empty_class = class(mt)
     empty_class.__index = mt.__index
     return empty_class()
 end
 
-function smNES.fckmetatable(tbl, mt)
+function ccNES.fckmetatable(tbl, mt)
     local old__newindex = mt.__newindex
     mt.__newindex = nil
-    local newtbl = smNES.mt_hook(mt)
+    local newtbl = ccNES.mt_hook(mt)
     for k, v in pairs(tbl) do
         newtbl[k] = v
     end
@@ -214,15 +214,15 @@ function smNES.fckmetatable(tbl, mt)
     return newtbl
 end
 
-function smNES.tableClear(tbl)
+function ccNES.tableClear(tbl)
     for k in pairs(tbl) do
         tbl[k] = nil
     end
 end
 
-function smNES.loadlib(name)
-    print("smNES loadlib> ", name)
-    local path = "Scripts/smNES/" .. name .. ".lua"
+function ccNES.loadlib(name)
+    print("ccNES loadlib> ", name)
+    local path = "Scripts/ccNES/" .. name .. ".lua"
     dofile("$CONTENT_DATA/" .. path)
     if not sourceGen and better and better.isAvailable() then
         if not sourcePushs[name] then
@@ -263,16 +263,16 @@ local file_mt = {
     }
 }
 
-function smNES.open(path, mode)
+function ccNES.open(path, mode)
     mode = mode or "r"
     local file
     if mode:sub(1, 1) == "w" then
         return nil, "failed to write file"
-        --file = smNES.mt_hook(file_mt)
+        --file = ccNES.mt_hook(file_mt)
         --file.write = true
         --file.buffer = {}
     else
-        file = smNES.mt_hook(file_mt)
+        file = ccNES.mt_hook(file_mt)
         file.buffer = sm.json.open(path)
         file.offset = 0
     end
@@ -280,14 +280,14 @@ function smNES.open(path, mode)
     return file
 end
 
-smNES.loadlib "nes"
-smNES.loadlib "libs/json"
+ccNES.loadlib "nes"
+ccNES.loadlib "libs/json"
 
 local function isNesFile(path)
     return path:sub(#path - 3, #path) == ".nes"
 end
 
-function smNES.new(file)
+function ccNES.new(file)
     local Nes = NES:new(
         {
             file = file,
@@ -312,7 +312,7 @@ end
 
 if better and better.isAvailable() and better.thread then
     local convertedRoms = {}
-    function smNES.newThread(file)
+    function ccNES.newThread(file)
         local th
         do
             local ROMSTR
@@ -370,14 +370,14 @@ if better and better.isAvailable() and better.thread then
                     local threadEnd, err = th:result()
                     if threadEnd then
                         if err then
-                            print("smNES.newThread error on stop: ", err)
+                            print("ccNES.newThread error on stop: ", err)
                         end
                         th:free()
                         break
                     end
 
                     if os.clock() - startTime > 2 then
-                        print("smNES.newThread failed to stop")
+                        print("ccNES.newThread failed to stop")
                         break
                     end
                 end
@@ -388,7 +388,7 @@ if better and better.isAvailable() and better.thread then
                 local ok, err = th:result()
                 if ok then
                     if err then
-                        print("smNES.newThread error: ", err)
+                        print("ccNES.newThread error: ", err)
                     end
                     th:free()
                 end

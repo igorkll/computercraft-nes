@@ -10,7 +10,7 @@ PPU = {}
 local PPU = PPU
 PPU._mt = { __index = PPU }
 function PPU:new(conf, cpu, palette)
-    local ppu = smNES.mt_hook(PPU._mt)
+    local ppu = ccNES.mt_hook(PPU._mt)
     ppu:initialize(conf, cpu, palette)
     return ppu
 end

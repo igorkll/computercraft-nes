@@ -51,7 +51,7 @@ APU.OSCILLATOR_CLOCKS =
       end
     )
 function APU:new(conf, cpu, rate, bits)
-  local apu = smNES.mt_hook(APU._mt)
+  local apu = ccNES.mt_hook(APU._mt)
   apu:initialize(conf, cpu, rate, bits)
   return apu
 end

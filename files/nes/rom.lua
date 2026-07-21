@@ -1,4 +1,4 @@
-smNES.loadlib("libs/serpent")
+ccNES.loadlib("libs/serpent")
 local serpent = serpent
 
 local band, bor, bxor, bnot, lshift, rshift = bit.band, bit.bor, bit.bxor, bit.bnot, bit.lshift, bit.rshift
@@ -117,7 +117,7 @@ function ROM:load_battery()
         return
     end
     local sav = self.basename .. ".sav"
-    local inp = smNES.open(sav, "rb")
+    local inp = ccNES.open(sav, "rb")
     if not inp then
         return
     end
@@ -131,13 +131,13 @@ function ROM:save_battery()
     end
     local sav = self.basename .. ".sav"
     ccNES.print("Saving: " .. sav)
-    local out = assert(smNES.open(sav, "wb"))
+    local out = assert(ccNES.open(sav, "wb"))
     out:write(serpent.dump(self.wrk))
     assert(out:close())
 end
 
 function ROM:new(conf, cpu, ppu, basename, bytes, str, custom_metatable)
-    local rom = smNES.mt_hook(custom_metatable or ROM._mt)
+    local rom = ccNES.mt_hook(custom_metatable or ROM._mt)
     rom:initialize(conf, cpu, ppu, basename, bytes, str)
     return rom
 end
@@ -152,7 +152,7 @@ function ROM.load(conf, cpu, ppu)
         path, basename, extension = string.match(filename, "(.-)([^\\]-([^\\%.]+))$")
     end
 
-    local inp = assert(smNES.open(filename, "rb"))
+    local inp = assert(ccNES.open(filename, "rb"))
     local str = inp:read("*all")
     assert(inp:close())
     local blob = {}
@@ -209,13 +209,13 @@ function ROM:parse_header(buf, str)
     return prg_banks, chr_banks, ram_banks
 end
 
-local UxROM = smNES.mt_hook({ __index = ROM })
+local UxROM = ccNES.mt_hook({ __index = ROM })
 UxROM._mt = { __index = UxROM }
 function UxROM:new(...)
     local args = { ... }
     table.insert(args, UxROM._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, UxROM._mt)
+    return ccNES.fckmetatable(rom, UxROM._mt)
 end
 
 function UxROM:reset()
@@ -231,13 +231,13 @@ end
 
 ROM.MAPPER_DB[0x02] = UxROM
 
-local CNROM = smNES.mt_hook({ __index = ROM })
+local CNROM = ccNES.mt_hook({ __index = ROM })
 CNROM._mt = { __index = CNROM }
 function CNROM:new(...)
     local args = { ... }
     table.insert(args, CNROM._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, CNROM._mt)
+    return ccNES.fckmetatable(rom, CNROM._mt)
 end
 
 function CNROM:reset()
@@ -255,10 +255,10 @@ end
 
 ROM.MAPPER_DB[0x03] = CNROM
 
-local MMC1 = smNES.mt_hook({ __index = ROM })
+local MMC1 = ccNES.mt_hook({ __index = ROM })
 MMC1._mt = { __index = MMC1 }
 function MMC1:new(...)
-    local rom = smNES.mt_hook(MMC1._mt)
+    local rom = ccNES.mt_hook(MMC1._mt)
     rom:initialize(...)
     return rom
 end
@@ -414,13 +414,13 @@ end
 
 ROM.MAPPER_DB[0x01] = MMC1
 
-local MMC3 = smNES.mt_hook({ __index = ROM })
+local MMC3 = ccNES.mt_hook({ __index = ROM })
 MMC3._mt = { __index = MMC3 }
 function MMC3:new(...)
     local args = { ... }
     table.insert(args, MMC3._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, MMC3._mt)
+    return ccNES.fckmetatable(rom, MMC3._mt)
 end
 
 function MMC3:init(rev) -- rev = :A or :B or :C
@@ -632,13 +632,13 @@ end
 
 ROM.MAPPER_DB[0x04] = MMC3
 
-local MMC5 = smNES.mt_hook({ __index = ROM })
+local MMC5 = ccNES.mt_hook({ __index = ROM })
 MMC5._mt = { __index = MMC5 }
 function MMC5:new(...)
     local args = { ... }
     table.insert(args, MMC5._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, MMC5._mt)
+    return ccNES.fckmetatable(rom, MMC5._mt)
 end
 
 function MMC5:init()
@@ -720,7 +720,7 @@ function MMC5:init()
     self.chr_ref_bg_1k_chr_banks    = { b, b, b, b }
     self.chr_ref_last_1k_chr_banks  = self.chr_ref_sp_1k_chr_banks
 
-    self.chr_ref                    = smNES.mt_hook({ __index = bind(self.chr_read, self), __newindex = bind(self.chr_write, self) })
+    self.chr_ref                    = ccNES.mt_hook({ __index = bind(self.chr_read, self), __newindex = bind(self.chr_write, self) })
 end
 
 function MMC5:get_prg_8k_bank(selector)
@@ -994,13 +994,13 @@ end
 
 ROM.MAPPER_DB[0x05] = MMC5
 
-local AxROM = smNES.mt_hook({ __index = ROM })
+local AxROM = ccNES.mt_hook({ __index = ROM })
 AxROM._mt = { __index = AxROM }
 function AxROM:new(...)
     local args = { ... }
     table.insert(args, AxROM._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, AxROM._mt)
+    return ccNES.fckmetatable(rom, AxROM._mt)
 end
 
 function AxROM:reset()
@@ -1021,13 +1021,13 @@ end
 ROM.MAPPER_DB[0x07] = AxROM
 ROM.MAPPER_DB[0x47] = AxROM
 
-local ColorDreamsROM = smNES.mt_hook({ __index = ROM })
+local ColorDreamsROM = ccNES.mt_hook({ __index = ROM })
 ColorDreamsROM._mt = { __index = ColorDreamsROM }
 function ColorDreamsROM:new(...)
     local args = { ... }
     table.insert(args, ColorDreamsROM._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, ColorDreamsROM._mt)
+    return ccNES.fckmetatable(rom, ColorDreamsROM._mt)
 end
 
 function ColorDreamsROM:reset()
@@ -1058,13 +1058,13 @@ end
 
 ROM.MAPPER_DB[0x0B] = ColorDreamsROM
 
-local GxROM = smNES.mt_hook({ __index = ROM })
+local GxROM = ccNES.mt_hook({ __index = ROM })
 GxROM._mt = { __index = GxROM }
 function GxROM:new(...)
     local args = { ... }
     table.insert(args, GxROM._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, GxROM._mt)
+    return ccNES.fckmetatable(rom, GxROM._mt)
 end
 
 function GxROM:reset()
@@ -1095,13 +1095,13 @@ end
 
 ROM.MAPPER_DB[0x42] = GxROM
 
-local MMC2 = smNES.mt_hook({ __index = ROM })
+local MMC2 = ccNES.mt_hook({ __index = ROM })
 MMC2._mt = { __index = MMC2 }
 function MMC2:new(...)
     local args = { ... }
     table.insert(args, MMC2._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, MMC2._mt)
+    return ccNES.fckmetatable(rom, MMC2._mt)
 end
 
 function MMC2:reset()
@@ -1175,13 +1175,13 @@ end
 
 ROM.MAPPER_DB[0x09] = MMC2
 
-local MMC4 = smNES.mt_hook({ __index = ROM })
+local MMC4 = ccNES.mt_hook({ __index = ROM })
 MMC4._mt = { __index = MMC4 }
 function MMC4:new(...)
     local args = { ... }
     table.insert(args, MMC4._mt)
     local rom = ROM:new(unpack(args))
-    return smNES.fckmetatable(rom, MMC4._mt)
+    return ccNES.fckmetatable(rom, MMC4._mt)
 end
 
 function MMC4:reset()

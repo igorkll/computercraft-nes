@@ -1,22 +1,22 @@
-smNES = {}
+ccNES = {}
 
-function smNES.mt_hook(mt)
+function ccNES.mt_hook(mt)
     local empty_class = class(mt)
     empty_class.__index = mt.__index
     return empty_class()
 end
 
-function smNES.tableClear(tbl)
+function ccNES.tableClear(tbl)
     for k in pairs(tbl) do
         tbl[k] = nil
     end
 end
 
-function smNES.loadlib(name)
-    dofile("$CONTENT_DATA/Scripts/smNES/" .. name .. ".lua")
+function ccNES.loadlib(name)
+    dofile("$CONTENT_DATA/Scripts/ccNES/" .. name .. ".lua")
 end
 
-smNES.loadlib "nes"
+ccNES.loadlib "nes"
 Nes = nil
 local width = 256
 local height = 240

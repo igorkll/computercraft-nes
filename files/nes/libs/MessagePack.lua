@@ -55,7 +55,7 @@ local function checktype (caller, narg, arg, tname)
     end
 end
 
-local packers = smNES.mt_hook({
+local packers = ccNES.mt_hook({
     __index = function (t, k) error("pack '" .. k .. "' is unimplemented") end
 })
 m.packers = packers
@@ -744,7 +744,7 @@ local function unpack_ext (c, n, tag)
     return m.build_ext(tag, s:sub(i, e))
 end
 
-unpackers = smNES.mt_hook({
+unpackers = ccNES.mt_hook({
     __index = function (t, k)
         if k < 0xC0 then
             if k < 0x80 then

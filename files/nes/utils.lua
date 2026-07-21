@@ -88,7 +88,7 @@ end
 function UTILS.shiftingArray()
     local _t = {}
     local shift = 0
-    local t = smNES.mt_hook({
+    local t = ccNES.mt_hook({
         __index = function(t, k)
             return _t[UTILS.rotateIdx(_t, k + shift)]
         end,
@@ -336,10 +336,10 @@ local p = print
 local f = nil
 function UTILS.print(x)
     if not f then
-        local ff = assert(smNES.open("logs.txt", "w"))
+        local ff = assert(ccNES.open("logs.txt", "w"))
         ff:write("")
         ff:close()
-        f = assert(smNES.open("logs.txt", "a"))
+        f = assert(ccNES.open("logs.txt", "a"))
         asdasdsssasd = f
     end
     local str = UTILS.dump(x)
@@ -358,14 +358,14 @@ end
 function UTILS.class(parent)
     local class
     if parent then
-        class = smNES.mt_hook({ __index = parent })
+        class = ccNES.mt_hook({ __index = parent })
         class._parent = parent
     else
         class = {}
     end
     class._mt = { __index = class }
     function class:new(...)
-        local instance = smNES.mt_hook(class._mt)
+        local instance = ccNES.mt_hook(class._mt)
         if instance.initialize then
             instance:initialize(...)
         end

@@ -9,7 +9,7 @@ Pads = {}
 local Pads = Pads
 Pads._mt = {__index = Pads}
 function Pads:new(conf, cpu, apu)
-  local pads = smNES.mt_hook(Pads._mt)
+  local pads = ccNES.mt_hook(Pads._mt)
   pads:initialize(conf, cpu, apu)
   return pads
 end

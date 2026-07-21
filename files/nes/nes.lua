@@ -1,22 +1,22 @@
-smNES.loadlib "libs/serpent"
-smNES.loadlib "utils"
-smNES.loadlib "cpu"
+ccNES.loadlib "libs/serpent"
+ccNES.loadlib "utils"
+ccNES.loadlib "cpu"
 
 --[[
 if coroutine then
-    smNES.loadlib "coroutine_ppu"
+    ccNES.loadlib "coroutine_ppu"
 elseif better and better.isAvailable() and better.nativeCoroutine then
     coroutine = better.nativeCoroutine
-    smNES.loadlib "coroutine_ppu"
+    ccNES.loadlib "coroutine_ppu"
 else
-    smNES.loadlib "ppu"
+    ccNES.loadlib "ppu"
 end
 ]]
-smNES.loadlib "ppu"
-smNES.loadlib "apu"
-smNES.loadlib "rom"
-smNES.loadlib "palette"
-smNES.loadlib "pads"
+ccNES.loadlib "ppu"
+ccNES.loadlib "apu"
+ccNES.loadlib "rom"
+ccNES.loadlib "palette"
+ccNES.loadlib "pads"
 
 local band, bor, bxor, bnot, lshift, rshift = bit.band, bit.bor, bit.bxor, bit.bnot, bit.lshift, bit.rshift
 local map, rotatePositiveIdx, nthBitIsSet, nthBitIsSetInt =
@@ -90,7 +90,7 @@ end
 function NES:new(opts)
     opts = opts or {}
     local conf = { romfile = opts.file, pc = opts.pc or nil, loglevel = opts.loglevel or 0 }
-    local nes = smNES.mt_hook(NES._mt)
+    local nes = ccNES.mt_hook(NES._mt)
     local palette = opts.palette or PALETTE:defacto_palette()
     nes.cpu = CPU:new(conf)
     nes.cpu.apu = APU:new(conf, nes.cpu)
