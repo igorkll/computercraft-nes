@@ -89,6 +89,18 @@ function ccNES.new(file)
     return Nes
 end
 
+function ccNES.getCallback(term, speakers)
+    return function(request)
+        sndplay.waitIfNeedAndPlayBufferOnSeveralSpeakers(speakers, request.pcm)
+
+        local keyEvents = {}
+
+        return {
+            keyEvents = keyEvents
+        }
+    end
+end
+
 function ccNES.start(file, callback)
     local nes
     local function runNes()
@@ -128,13 +140,13 @@ function ccNES.start(file, callback)
             pcm[i] = byte - 128
         end
 
-        local response = {
+        local request = {
             pixels = nes.cpu.ppu.output_pixels,
             audio = pcm
         }
 
         --run user callback
-        local response = callback(response)
+        local response = callback(request)
         
         --process response
         if response then
